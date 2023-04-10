@@ -4,102 +4,94 @@ const SPREADSHEET_ID = "1p2jQxopbxImai3jTx96olNqHfOy5OmCkv0pINGxQcws";
 const URL = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
 const form = document.getElementById("form");
+const presentsDiv = document.getElementById("presents");
+let elements = [];
 
-let responses = [];
-
-
-function filtreElements(tableau, responses) {
-  // Filtrer les éléments en fonction des réponses de l'utilisateur
-  let randomArray = [];
-  const response = responses[0];
-  const elementsFiltres = tableau.filter(element => {
-    if(parseInt(element.age) <= response.age && parseInt(element.budget) <= response.budget) {
-      return true 
-    } else {
-      return false
-    }
+// Récupère les données du Google Sheet
+async function fetchData() {
+  const response = await fetch(URL);
+  const data = await response.json();
+  const values = data.values;
+  const headers = values[0];
+  const rows = values.slice(1);
+  
+  elements = rows.map(row => {
+    return headers.reduce((obj, header, index) => {
+      obj[header] = row[index];
+      return obj;
+    }, {});
   });
-  // Renvoyer les 3 premiers éléments filtrés
-  if (elementsFiltres.length === 0) {
-    console.log("Il n'y a pas de valeur correspondante");
-  } else {
-    for (let i = 0; i <= elementsFiltres.length && i < 3; i++) {
-      // Générer un index aléatoire entre 0 et la longueur du tableau
-      const indexAleatoire = Math.floor(Math.random() * elementsFiltres.length);
-  
-      // Ajouter l'élément correspondant à l'index aléatoire dans le tableau d'éléments aléatoires
-      randomArray.push(elementsFiltres[indexAleatoire]);
-  
-      // Retirer l'élément sélectionné pour éviter les doublons
-      elementsFiltres.splice(indexAleatoire, 1);
-    }
+}
+
+// Filtrage des éléments en fonction des réponses du formulaire
+function filterElements(responses) {
+  const filteredElements = elements.filter(element => {
+    const age = parseInt(responses.age);
+    const budget = parseInt(responses.budget);
+    return parseInt(element.age) <= age && parseInt(element.budget) <= budget;
+  });
+  return filteredElements;
+}
+
+// Sélection de 3 éléments aléatoires parmi les éléments filtrés
+function selectRandomElements(filteredElements) {
+  if (filteredElements.length === 0) {
+    console.log("Pas de cadeau pour toi, nique ta race héhé");
+    return [];
   }
-  return randomArray;
-}
-//Permet de récupérer le données du google sheet et de creer les items
-const letsgo = () => {
-  fetch(URL)
-    .then(response => response.json())
-    .then(data => {
-      const values = data.values;
-      const headers = values[0];
-      const rows = values.slice(1);
-              
-      const results = rows.map(row => {
-        return headers.reduce((obj, header, index) => {
-          obj[header] = row[index];
-          return obj;
-        }, {});
-      });
-      console.log(results)
-      const presentsDiv = document.getElementById("presents");
-      console.log(presentsDiv)
-      const elemfiltered = filtreElements(results, responses)
-      console.log(elemfiltered)
-      elemfiltered.forEach(el => {
-        console.log(el)
-        const elementHtml = `
-          <a href="${el.lien}" target="_blank">
-            <img src="${el.image}">
-            <p>${el.name}</p>
-          </a>
-        `;
-        presentsDiv.innerHTML += elementHtml;
-      });
-
-
-    })
-    .catch(error => console.error(error));
+  const randomElements = [];
+  while (randomElements.length < 3 && filteredElements.length > 0) {
+    const randomIndex = Math.floor(Math.random() * filteredElements.length);
+    randomElements.push(filteredElements[randomIndex]);
+    filteredElements.splice(randomIndex, 1);
+  }
+  return randomElements;
 }
 
+// Affichage des éléments sur la page
+function displayElements(randomElements) {
+  randomElements.forEach(element => {
+    const link = document.createElement("a");
+    link.href = element.lien;
+    link.target = "_blank";
+    
+    const image = document.createElement("img");
+    image.src = element.image;
+    link.appendChild(image);
+    
+    const name = document.createElement("p");
+    name.textContent = element.name;
+    link.appendChild(name);
+    
+    presentsDiv.appendChild(link);
+  });
+}
+
+// Réinitialisation des champs du formulaire
+function resetForm() {
+  form.reset();
+}
 
 // Ecouteur d'événement pour le formulaire
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
-  const budget = parseInt(document.getElementById("budget").value);
-  const age = parseInt(document.getElementById("age").value);
   
   // Récupération des valeurs des champs du formulaire
-  // const gender = document.querySelector("#gender").value;
-  // const interests = document.getElementById("interests").value;
-  // const hobbies = document.getElementById("hobbies").value;
+  const responses = {
+    age: document.getElementById("age").value,
+    budget: document.getElementById("budget").value
+  };
   
-  // Stockage des réponses dans le tableau
-  responses.push({
-    budget,
-    age,
-    // gender,
-    // interests,
-    // hobbies
-  });
-
-  console.log(responses)
-
-  const filteredResult = await letsgo();
-  console.log(filteredResult);
-
-  // Réinitialisation des champs du formulaire
-  form.reset();
+  // Récupération des données du Google Sheet si ce n'est pas déjà fait
+  if (elements.length === 0) {
+    await fetchData();
+  }
+  
+  const filteredElements = filterElements(responses);
+  const randomElements = selectRandomElements(filteredElements);
+  displayElements(randomElements);
+  resetForm();
 });
+
 
 
