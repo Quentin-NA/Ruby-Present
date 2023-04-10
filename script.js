@@ -5,6 +5,7 @@ const URL = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/val
 
 const form = document.getElementById("form");
 const presentsDiv = document.getElementById("presents");
+const showMoreBtn = document.getElementById("show-more");
 let elements = [];
 
 // Récupère les données du Google Sheet
@@ -23,12 +24,17 @@ async function fetchData() {
   });
 }
 
+
+
 // Filtrage des éléments en fonction des réponses du formulaire
 function filterElements(responses) {
   const filteredElements = elements.filter(element => {
     const age = parseInt(responses.age);
     const budget = parseInt(responses.budget);
     return parseInt(element.age) <= age && parseInt(element.budget) <= budget;
+  });
+  showMoreBtn.addEventListener("click", () => {
+    displayElements(filteredElements);
   });
   return filteredElements;
 }
@@ -49,7 +55,7 @@ function selectRandomElements(filteredElements) {
 }
 
 // Affichage des éléments sur la page
-function displayElements(randomElements) {
+const displayElements = (randomElements) => {
   randomElements.forEach(element => {
     const link = document.createElement("a");
     link.href = element.lien;

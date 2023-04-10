@@ -2,38 +2,43 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Formulaire</title>
+    <title>Ruby present</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Barriecito&family=Permanent+Marker&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="container">
-      <h1>Formulaire</h1>
+      <img id="ruby" src="img/Natzflam_a_beautyfull_human_women_smiling_avatar_for_a_chatbot__733dbee1-5c3b-4b5a-93cf-5c8dfe1d4dab.png" alt="">
       <form id="form">
-        <label for="budget">Quel budget ?</label>
-        <input type="number" id="budget" name="budget" required>
-
-        <label for="age">Quel âge ?</label>
-        <input type="number" id="age" name="age" required>
-
-        <!-- <label for="gender">Homme ou femme ?</label>
-        <select id="gender" name="gender">
-          <option value="homme">Homme</option>
-          <option value="femme">Femme</option>
-        </select>
-
-        <label for="interests">Centres d'intérêts :</label>
-        <textarea id="interests" name="interests"></textarea>
-
-        <label for="hobbies">Hobbies :</label>
-        <textarea id="hobbies" name="hobbies"></textarea> -->
+        <div class="inputs">
+            <label for="budget">Quel budget ?</label>
+            <input type="number" id="budget" name="budget" required>
+    
+            <label for="age">Quel âge ?</label>
+            <input type="number" id="age" name="age" required>
+    
+            <!-- <label for="gender">Homme ou femme ?</label>
+            <select id="gender" name="gender">
+              <option value="homme">Homme</option>
+              <option value="femme">Femme</option>
+            </select>
+    
+            <label for="interests">Centres d'intérêts :</label>
+            <textarea id="interests" name="interests"></textarea>
+    
+            <label for="hobbies">Hobbies :</label>
+            <textarea id="hobbies" name="hobbies"></textarea> -->
+        </div>
         <button type="submit">Envoyer</button>
       </form>
       <div>
         <div id="presents"></div>
         
-        <button id="show-more">Voir plus</button>
-
+        
       </div>
+      <button id="show-more">Voir plus</button>
     </div>
     <script src="script.js"></script>
   </body>
