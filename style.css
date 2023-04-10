@@ -1,3 +1,13 @@
+
+
+
+body {
+  background-color: antiquewhite;
+  font-family: 'DynaPuff', cursive;
+
+}
+
+
 .container {
     max-width: 600px;
     margin: 0 auto;
@@ -5,24 +15,25 @@
     text-align: center;
   }
   
+  
   h1 {
     font-size: 36px;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
-  
-  form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+
+  #ruby {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 30px;
   }
   
   label {
     display: block;
     width: 100%;
-    max-width: 400px;
     margin-bottom: 10px;
     font-size: 20px;
-    text-align: left;
+    text-align: center;
   }
   
   input, select, textarea {
@@ -60,19 +71,42 @@
 
   #show-more {
     height: 50px;
-    display: block;
+    margin-top: 30px;
   }
 
+  form button{
+    margin: 50px 0;
+  }
+  
+    #presents {
+      border-radius: 20px;
+      /* background: rgb(131,58,180);
+      background: linear-gradient(50deg, rgba(131,58,180,1) 0%, rgba(253,29,29,0) 0%, rgba(252,176,69,0.9753151260504201) 100%); */
+      width: 600px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
 
-  img {
-    width: 150px;
-    height: 125px;
+    #presents img {
+      width: -webkit-fill-available;
+      height: inherit;
+      object-fit: fill;
+      border-radius: 10px;
   }
 
-  #presents {
-    height: 500px;
-    width: 600px;
-    border: 1px solid black;
-    display: flex;
-    justify-content: space-around;
+  #presents a {
+    height: 200px;
+    max-width: 175px;
+    -webkit-box-shadow: 1px 3px 14px -6px #000000; 
+    box-shadow: 1px 3px 14px -6px #000000;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 100px;
+    text-decoration: none;
+    color: black;
+  }
+
+  #presents a:hover{
+    scale: 1.02;
   }
